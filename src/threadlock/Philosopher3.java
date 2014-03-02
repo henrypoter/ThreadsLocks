@@ -15,12 +15,10 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 
 /*
- * a simple simulation of the dining philosophers
- * problem in which we don's concern ourselves with
- * deadlocks: having Philosopher extend Thread, and 
- * Chopstick call lock.lock() when it is picked up and
- * lock.unlock() when it is put down.
- * 
+ * a simple simulation of the dining philosophers problem in which we don's
+ * concern ourselves with deadlocks: having Philosopher extend Thread, and
+ * Chopstick call lock.lock() when it is picked up and lock.unlock() when it is
+ * put down.
  */
 public class Philosopher3 {
 	private int bites = 10;
@@ -83,72 +81,73 @@ class Chopstick {
 		lock.unlock();
 	}
 }
+
 /*
- * above leads to a deaklock of all the philosophers
- * have a left chopstick and are waiting for the right one
- * to prevent deadlocks, we can implement a strategy
- * where a philosopher will put down his left chopstick
- * if he is unable to obtain the right one.
- * 
- * 
+ * above leads to a deaklock of all the philosophers have a left chopstick and
+ * are waiting for the right one to prevent deadlocks, we can implement a
+ * strategy where a philosopher will put down his left chopstick if he is unable
+ * to obtain the right one.
  */
- class ChopstickBetter{
+class ChopstickBetter {
 	private Lock lock;
 
 	public ChopstickBetter() {
 		lock = new ReentrantLock();
 	}
-	public boolean pickUp(){
+
+	public boolean pickUp() {
 		return lock.tryLock();
-	}	
+	}
+
 	public void putDown() {
 		lock.unlock();
 	}
 }
- 
- class PhilosopherBetter extends Thread{
-	 private int bites = 10;
-		private ChopstickBetter left;
-		private ChopstickBetter right;
 
-		public PhilosopherBetter(ChopstickBetter left, ChopstickBetter right) {
-			this.left = left;
-			this.right = right;
-		}
-		public void eat(){
-			if(pickUp()){
-				chew();
-				putDown();
-			}
-		}
-		public boolean pickUp(){
-			if(!left.pickUp()){
-				return false;
-			}
-			if(!right.pickUp()){
-				left.putDown();
-				return false;
-			}
-			return true;
-		}
-		public void chew() {
-		}
+class PhilosopherBetter extends Thread {
+	private int bites = 10;
+	private ChopstickBetter left;
+	private ChopstickBetter right;
 
-		public void putDown() {
+	public PhilosopherBetter(ChopstickBetter left, ChopstickBetter right) {
+		this.left = left;
+		this.right = right;
+	}
+
+	public void eat() {
+		if (pickUp()) {
+			chew();
+			putDown();
+		}
+	}
+
+	public boolean pickUp() {
+		if (!left.pickUp()) {
+			return false;
+		}
+		if (!right.pickUp()) {
 			left.putDown();
-			right.putDown();
+			return false;
 		}
+		return true;
+	}
 
-		public void run() {
-			for (int i = 0; i < bites; i++) {
-				eat();
-			}
- }
+	public void chew() {
+	}
 
- }
- /*
-  * release the left chopstick if we can't pick up
-  * the right one-and to not call putDown() on the chopsticks
-  * if we never had them in the first place.
-  */
- 
+	public void putDown() {
+		left.putDown();
+		right.putDown();
+	}
+
+	public void run() {
+		for (int i = 0; i < bites; i++) {
+			eat();
+		}
+	}
+
+}
+/*
+ * release the left chopstick if we can't pick up the right one-and to not call
+ * putDown() on the chopsticks if we never had them in the first place.
+ */

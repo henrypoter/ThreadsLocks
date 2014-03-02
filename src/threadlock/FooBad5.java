@@ -4,19 +4,16 @@ import java.util.concurrent.Semaphore;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
- * 16.5 The same instance of Foo will bepassed 
- * to three different threads. ThreadA will call 
- * first, threads will call second, 
- * and threadC will call third. Design a 
- * mecha- nism to ensure that first is called 
- * before second and second is called before third.
+ * 16.5 The same instance of Foo will bepassed to three different threads.
+ * ThreadA will call first, threads will call second, and threadC will call
+ * third. Design a mecha- nism to ensure that first is called before second and
+ * second is called before third.
  */
 /*
- * general logic is to check if first() has completed
- * before executing second(), and if second() has completed
- * before calling third(). Because we need to be very careful
- * about thread safety, simple boolean flags won't do the job.
- * what about using a lock to do something like the below code?
+ * general logic is to check if first() has completed before executing second(),
+ * and if second() has completed before calling third(). Because we need to be
+ * very careful about thread safety, simple boolean flags won't do the job. what
+ * about using a lock to do something like the below code?
  */
 public class FooBad5 {
 	public int pauseTime = 1000;
@@ -62,18 +59,15 @@ public class FooBad5 {
 	}
 }
 
-
 /*
- * this code won't actually quite work due to the concept
- * of lock ownership. one thread is actually performing the lock(
- * in the FooBad constructor), but different threads attempt
- * to unlock the locks. this is not allowed, you code will
- * raise an exception. a lock in Java is owned by the same
- * thread which locked it.
+ * this code won't actually quite work due to the concept of lock ownership. one
+ * thread is actually performing the lock( in the FooBad constructor), but
+ * different threads attempt to unlock the locks. this is not allowed, you code
+ * will raise an exception. a lock in Java is owned by the same thread which
+ * locked it.
  */
 /*
- * instead, we can replicate this behavior with 
- * semaphores. logic is identical.
+ * instead, we can replicate this behavior with semaphores. logic is identical.
  */
 class Foo {
 	public Semaphore sem1, sem2, sem3;

@@ -25,7 +25,7 @@ public class Philosopher3 {
 	private Chopstick left;
 	private Chopstick right;
 
-	public Philosopher3(Chopstick left, Chopstick rigth) {
+	public Philosopher3(Chopstick left, Chopstick right) {
 		this.left = left;
 		this.right = right;
 	}

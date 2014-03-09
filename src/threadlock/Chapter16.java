@@ -97,6 +97,7 @@ class ExampleB {
 
 class MyClass extends Thread {
 	private String name;
+	@SuppressWarnings("unused")
 	private MyObject myObj;
 
 	public MyClass(MyObject obj, String n) {
@@ -109,7 +110,7 @@ class MyClass extends Thread {
 			MyObject.foo(name);
 		else if (name.equals("2"))
 			MyObject.bar(name);
-		myObj.foo(name);
+		MyObject.foo(name);
 
 	}
 }

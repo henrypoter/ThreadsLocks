@@ -9,8 +9,7 @@ import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
-
-import threadlock.LockNode.VisitState;
+//import threadlock.LockNode.VisitState;
 
 /*
  * require a process to declare upfront what locks it will need.
@@ -69,6 +68,7 @@ import threadlock.LockNode.VisitState;
  */
 public class LockFactory4 {
 	private static LockFactory4 instance;
+	@SuppressWarnings("unused")
 	private int numberOfLocks = 5;// default
 	private LockNode[] locks;
 	// maps from a process or owner to the order that the owner
